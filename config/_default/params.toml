@@ -36,7 +36,7 @@ enableCodeCopy = true
 
 [author]
   name = "Joe Bylund"
-  # image = "img/author.jpg"
+  image = "img/author.png"
   # headline = "Software engineer"
   # bio = "..."
   links = [
