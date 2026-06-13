@@ -1,0 +1,45 @@
+colorScheme = "ocean"
+defaultAppearance = "dark"
+autoSwitchAppearance = true
+
+enableSearch = true
+enableCodeCopy = true
+
+[homepage]
+  layout = "profile"
+  showRecent = true
+  showRecentItems = 5
+
+[article]
+  showDate = true
+  showDateUpdated = false
+  showAuthor = true
+  showReadingTime = true
+  showTableOfContents = true
+  showTaxonomies = true
+  showWordCount = false
+  showComments = false
+  sharingLinks = ["linkedin", "reddit"]
+
+[list]
+  showSummary = true
+  groupByYear = false
+
+[sitemap]
+  excludedKinds = []
+
+[taxonomy]
+  showTermCount = true
+
+[fathomAnalytics]
+  # site = ""
+
+[author]
+  name = "Joe Bylund"
+  # image = "img/author.jpg"
+  # headline = "Software engineer"
+  # bio = "..."
+  # links = [
+  #   { linkedin = "https://linkedin.com/in/xxx" },
+  #   { github = "https://github.com/jbylund" },
+  # ]

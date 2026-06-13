@@ -1,0 +1,8 @@
+[en]
+  label = "English"
+  weight = 1
+  title = "Joe Bylund"
+
+  [en.params]
+    displayName = "EN"
+    isoCode = "en"

@@ -1,0 +1,9 @@
+baseURL = "https://jbylund.github.io/"
+defaultContentLanguage = "en"
+enableRobotsTXT = true
+paginate = 10
+summaryLength = 0
+
+[module]
+[[module.imports]]
+  path = "github.com/nunocoracao/blowfish/v2"
