@@ -39,7 +39,7 @@ enableCodeCopy = true
   # image = "img/author.jpg"
   # headline = "Software engineer"
   # bio = "..."
-  # links = [
-  #   { linkedin = "https://linkedin.com/in/xxx" },
-  #   { github = "https://github.com/jbylund" },
-  # ]
+  links = [
+    { linkedin = "https://www.linkedin.com/in/josephbylund/" },
+    { github = "https://github.com/jbylund" },
+  ]
