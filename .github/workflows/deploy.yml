@@ -4,7 +4,7 @@ on:
   push:
     branches: ["master"]
   schedule:
-    - cron: "0 8 * * *"  # 8am UTC daily, picks up newly-eligible posts
+    - cron: "13 */6 * * *"  # every 6 hours, picks up newly-eligible posts
   workflow_dispatch:
 
 permissions:
