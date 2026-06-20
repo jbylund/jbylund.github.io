@@ -93,7 +93,7 @@ UNION ALL
 );
 ```
 
-The `null::integer` cast gives both branches the same column shape so `UNION ALL` can combine them. The caller reads the last row for the count and the first 100 rows for results.
+The `null::integer` cast gives both branches the same column shape so `UNION ALL` can combine them — PostgreSQL requires both sides of a union to have the same number of columns with compatible types, and a bare `null` carries no type information the planner can infer across the boundary, so the explicit cast is required. The caller reads the last row for the count and the first 100 rows for results.
 
 For `format:modern`, the plan:
 
@@ -174,4 +174,4 @@ The split timings surprised me at first. For `format:modern`, the planner walks 
 
 ## Picking the Right Form for Each Search Mode
 
-The CTE exists for the dedup case: most searches deduplicate by `oracle_id`, and it cuts those query times roughly in half — 132ms to 77ms for a broad query, 24ms to 12ms for a selective one. For non-dedup searches, the top-n and count branches want opposite index strategies — whichever access path is optimal for one is suboptimal for the other. A single materialization decision cannot be optimal for both: materializing all matching rows is right for the count but discards the sort-index early exit for top-n; using the sort index is right for top-n but forces a deep walk for count. Planning the branches independently is the only way to let each use the index it needs, which is what `NOT MATERIALIZED` provides.
+The CTE exists for the dedup case: deduplication by `oracle_id` is the default, and two of the three unique modes (`card`/`oracle_id` and `artwork`) also deduplicate — only `printing` does not. Most searches take the dedup path, and the CTE cuts those query times roughly in half — 132ms to 77ms for a broad query, 24ms to 12ms for a selective one. For non-dedup searches, the top-n and count branches want opposite index strategies — whichever access path is optimal for one is suboptimal for the other. A single materialization decision cannot be optimal for both: materializing all matching rows is right for the count but discards the sort-index early exit for top-n; using the sort index is right for top-n but forces a deep walk for count. Planning the branches independently is the only way to let each use the index it needs, which is what `NOT MATERIALIZED` provides.
