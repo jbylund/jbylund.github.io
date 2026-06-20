@@ -57,7 +57,7 @@ The query language also supports the most commonly used Scryfall filters — typ
 
 Reactive search — results updating as you type rather than on submit — requires latency low enough that the response arrives before the next keystroke.
 The project started with direct PostgreSQL queries — similar latency to Scryfall, workable for one-off lookups but not for per-keystroke updates.
-Replacing that hot path with an in-process Rust engine brought query times down to tens of milliseconds:
+Replacing that hot path with an in-process Rust engine brought query times down to tens of milliseconds. Both columns are browser network-tab measurements using the same instrument. Arcane Tutor is served as arcane-tutor.com, so both sides include public internet routing — the difference is Scryfall's CDN versus a home server, not LAN versus internet. Hardware: MacBook Pro M5 Max (18 cores, 128 GB). One measurement per query: at speedups of 30×–93×, a single sample is sufficient to establish two orders of magnitude.
 
 | Query | Scryfall | Arcane Tutor | Speedup |
 |-------|----------|--------------|---------|
@@ -65,8 +65,6 @@ Replacing that hot path with an in-process Rust engine brought query times down 
 | `t:creature` | 1100ms | 12ms | 92× |
 | `id:g` | 538ms | 17ms | 32× |
 | `format:modern` | 1850ms | 20ms | 93× |
-
-Both columns are browser network-tab measurements — the same instrument for both, so the comparison is fair end-to-end. Scryfall responses include public internet routing to their CDN; Arcane Tutor runs on LAN on a MacBook Pro M5 Max (18 cores, 128 GB). One measurement per query: at speedups of 30×–93×, a single sample is sufficient to establish the order of magnitude.
 
 At 15ms, results reach the browser before the next keystroke.
 The frontend sends a request on each input event; the user sees live results without a submit button.
@@ -84,7 +82,7 @@ A card with 30 printings in Scryfall might surface a showcase variant, a black-a
 Arcane Tutor encodes printing preferences as a numeric score: standard frame, black border, original artwork, non-foil unless foil-only.
 Each criterion contributes a weight; the weights sum to a `prefer_score`; the highest-scoring printing for each unique card ranks first.
 
-Both ranking layers run inside the same SQL `ORDER BY`, so relevance and printing preference are resolved in a single pass.
+Printing preference is resolved inside a CTE using `DISTINCT ON` with its own `ORDER BY`; the outer query then ranks the deduplicated cards by play rate. Two ordering steps, but a single SQL statement — no application-level post-processing.
 
 `power+toughness>cmc+cmc` returns fast enough for live search, with results ranked by play rate rather than name.
 
