@@ -125,6 +125,8 @@ In a Docker Compose setup neither limitation matters much:
 the container rebuilds on deploy anyway, and `--reload` workflows don't survive container restarts regardless of the server.
 The tradeoffs land differently if you are running directly on a developer machine where framework install friction and live-reload matter more.
 
+Bjoern's release cadence is low — the last tagged release was in 2021. For a production HTTP server that is worth knowing. The practical counterpoint is that the protocol surface Bjoern covers (WSGI over HTTP/1.1) is stable enough that an old release is less concerning than it would be for a higher-level library tracking a moving API.
+
 ## The Multi-Process Model
 
 Bjoern is single-threaded, so concurrency comes from running multiple worker processes.

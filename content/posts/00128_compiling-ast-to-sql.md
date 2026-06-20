@@ -95,4 +95,12 @@ Cards without a power attribute — lands, instants, sorceries — are expected 
 
 The context dict is the only path through which user-supplied values reach the database. Every `f"..."` string in every `to_sql` method contains only column names, SQL operators, and `%(name)s` placeholders. The values travel in the context dict and are bound by psycopg before the query executes. This is not input sanitization layered on top of string concatenation — the SQL string and the user string never meet.
 
-The one failure mode would be if a column name or operator were derived from user input. Column names come from `db_info.py`'s field map; operators come from the parser's fixed grammar. Neither is user-controlled.
+The one failure mode would be if a column name or operator were derived from user input. Column names come from `db_info.py`'s [field map](https://github.com/jbylund/arcane_tutor/blob/205dddc5d61d19c428a3e0f29c46d3fcf3898512/api/parsing/db_info.py#L112-L129); operators come from the parser's fixed grammar. Neither is user-controlled:
+
+```python
+FieldInfo(db_column_name="cmc",               search_aliases=["cmc", "mv", "manavalue"]),
+FieldInfo(db_column_name="creature_power",     search_aliases=["power", "pow"]),
+FieldInfo(db_column_name="creature_toughness", search_aliases=["toughness", "tou"]),
+```
+
+The user types `power`; the parser matches it against `search_aliases` and produces a `CardAttributeNode` wrapping `"creature_power"`. That column name was never in the user's input.

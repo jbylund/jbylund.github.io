@@ -58,7 +58,7 @@ This is fast, debuggable, and has no dependencies.
 
 I did not start here because of unfamiliarity and complexity (real or perceived).
 It felt like a much larger jump to go from zero to something functional with recursive descent than it would be with pyparsing.
-I later wrote a recursive descent parser, but it was easier to prototype with something with a lower barrier to entry.
+I later wrote a recursive descent parser, and it was substantially faster — pyparsing's overhead eventually became the bottleneck, which is what motivated the rewrite. But pyparsing ran in production for a long time while the grammar was still evolving, and the lower barrier to entry was the right tradeoff at that stage.
 
 ### Why ANTLR's Build-Time Toolchain Was Too Much
 
