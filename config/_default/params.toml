@@ -1,3 +1,5 @@
+siteName = "Arcane Tutor"
+
 colorScheme = "ocean"
 defaultAppearance = "dark"
 autoSwitchAppearance = true
