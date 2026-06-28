@@ -6,6 +6,11 @@ tags: ["python", "falcon", "bjoern", "fastapi", "performance"]
 summary: "Why Arcane Tutor uses Falcon and Bjoern instead of the FastAPI + uvicorn default: a preference for explicit, close-to-vanilla Python over framework magic."
 ---
 
+{{< sitename >}} caches search results, so most requests return without touching the database.
+When a response is already computed, the framework serializing it is all that stands between the request and the answer.
+On that path — pure serialization, no query, no business logic — Falcon + Bjoern handles 13× the throughput of FastAPI + uvicorn.
+For a read-heavy API where cache hits dominate, the framework is not an irrelevant detail.
+
 ## Benchmark Setup
 
 Each server ran in its own Docker container, built from the same base image with only the framework changed.
